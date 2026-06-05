@@ -1,0 +1,13 @@
+{
+  "name": "xgrc-envir-demo",
+  "version": "1.0.0",
+  "description": "XGRC EnvirX Carbon Intelligence Demo Dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
