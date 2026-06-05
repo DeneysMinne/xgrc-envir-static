@@ -1,7 +1,7 @@
 {
-  "name": "xgrc-envir-demo",
+  "name": "xgrc-static-demos",
   "version": "1.0.0",
-  "description": "XGRC EnvirX Carbon Intelligence Demo Dashboard",
+  "description": "XGR Static Demos — Risk and Carbon dashboard samples",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

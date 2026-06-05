@@ -1,6 +1,6 @@
-# XGRC EnvirX — Carbon Intelligence Demo
+# XGR Static Demos
 
-Multi-industry carbon dashboard and climate risk register demo.
+Interactive static dashboards for risk and carbon insights.
 
 ## Local development
 

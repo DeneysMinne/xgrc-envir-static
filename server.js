@@ -13,5 +13,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`XGRC EnvirX Demo running on port ${PORT}`);
+  console.log(`XGR Static Demos running on port ${PORT}`);
 });
