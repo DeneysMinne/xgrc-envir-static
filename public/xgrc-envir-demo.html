@@ -479,13 +479,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       </div>
     </div>
     <div class="card" id="riskPanel"><div class="rpanel-ph"><div class="rpanel-ph-icon">⬡</div><div class="rpanel-ph-txt">Loading selected risk details...</div></div></div>
-    <div class="card compliance-card" id="complianceOverview"></div>
-    <div class="card policy-card" id="policySummary"></div>
+    <div class="card compliance-card" id="complianceOverview"><div class="card-header"><div class="card-title">Global Compliance Overview</div><div class="ctag">Dashboard View</div></div><div class="card-content"><div class="rpanel-ph"><div class="rpanel-ph-icon">⚙</div><div class="rpanel-ph-txt">Compliance summary loading…</div></div></div></div>
+    <div class="card policy-card" id="policySummary"><div class="card-header"><div class="card-title">Policy Management Summary</div><div class="ctag">Active · Due · Overdue</div></div><div class="card-content"><div class="rpanel-ph"><div class="rpanel-ph-icon">⚙</div><div class="rpanel-ph-txt">Policy summary loading…</div></div></div></div>
   </div>
   <div class="g33">
-    <div class="card" id="controlPerformance"></div>
-    <div class="card" id="riskMatrix"></div>
-    <div class="card" id="recentActivities"></div>
+    <div class="card" id="controlPerformance"><div class="card-header"><div class="card-title">Control Performance</div><div class="ctag">Operational Resilience</div></div><div class="card-content"><div class="rpanel-ph"><div class="rpanel-ph-icon">⚙</div><div class="rpanel-ph-txt">Control performance loading…</div></div></div></div>
+    <div class="card" id="riskMatrix"><div class="card-header"><div class="card-title">Risk Matrix: High-Impact Risks</div><div class="ctag">Top 6</div></div><div class="card-content"><div class="rpanel-ph"><div class="rpanel-ph-icon">⚙</div><div class="rpanel-ph-txt">Risk matrix loading…</div></div></div></div>
+    <div class="card" id="recentActivities"><div class="card-header"><div class="card-title">Recent Activities & Alerts</div><div class="ctag">Latest Updates</div></div><div class="card-content"><div class="rpanel-ph"><div class="rpanel-ph-icon">⚙</div><div class="rpanel-ph-txt">Activity feed loading…</div></div></div></div>
   </div>
   <div class="footer">
     <div style="display:flex;gap:7px;flex-wrap:wrap">
@@ -1096,11 +1096,11 @@ function renderRisk() {
   renderHeatmap(fr);
   renderRiskTable(fr);
   renderRiskPanel();
-  renderComplianceOverview(fr, tot, crit, hi, med, lo);
-  renderPolicySummary();
-  renderControlPerformance(fr, tot, crit, hi, med, lo);
-  renderRiskMatrix(fr);
-  renderRecentActivities();
+  try { renderComplianceOverview(fr, tot, crit, hi, med, lo); } catch(e){ console.error('Compliance overview render failed', e); }
+  try { renderPolicySummary(); } catch(e){ console.error('Policy summary render failed', e); }
+  try { renderControlPerformance(fr, tot, crit, hi, med, lo); } catch(e){ console.error('Control performance render failed', e); }
+  try { renderRiskMatrix(fr); } catch(e){ console.error('Risk matrix render failed', e); }
+  try { renderRecentActivities(); } catch(e){ console.error('Recent activities render failed', e); }
 }
 
 function renderComplianceOverview(fr, tot, crit, hi) {
