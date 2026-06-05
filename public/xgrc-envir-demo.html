@@ -487,6 +487,28 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <div class="card" id="riskMatrix"><div class="card-header"><div class="card-title">Risk Matrix: High-Impact Risks</div><div class="ctag">Top 6</div></div><div class="card-content"><div class="rpanel-ph"><div class="rpanel-ph-icon">⚙</div><div class="rpanel-ph-txt">Risk matrix loading…</div></div></div></div>
     <div class="card" id="recentActivities"><div class="card-header"><div class="card-title">Recent Activities & Alerts</div><div class="ctag">Latest Updates</div></div><div class="card-content"><div class="rpanel-ph"><div class="rpanel-ph-icon">⚙</div><div class="rpanel-ph-txt">Activity feed loading…</div></div></div></div>
   </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Risk Register</div><div class="ctag" id="regCount">Risks</div></div>
+    <div class="card-content">
+      <table class="rtable">
+        <thead>
+          <tr>
+            <th>Risk ID</th>
+            <th>Risk Name</th>
+            <th>Type</th>
+            <th>Rating</th>
+            <th>Score</th>
+            <th>Horizon</th>
+            <th>Exposure</th>
+            <th>Trend</th>
+            <th>BU</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody id="riskTbody"></tbody>
+      </table>
+    </div>
+  </div>
   <div class="footer">
     <div style="display:flex;gap:7px;flex-wrap:wrap">
       <span class="fbadge">TCFD Aligned</span><span class="fbadge">IFRS S2</span>
