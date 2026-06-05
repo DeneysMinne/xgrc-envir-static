@@ -161,27 +161,68 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .dlabel{font-size:11px;color:var(--text-muted)}
 .dval{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-left:auto;padding-left:10px}
 
-/* ── RISK HEATMAP ── */
-.hm-grid{display:grid;grid-template-columns:38px repeat(5,1fr);grid-template-rows:repeat(5,1fr) 26px;gap:3px}
-.hm-cell{border-radius:5px;display:flex;align-items:center;justify-content:center;min-height:56px;flex-wrap:wrap;gap:3px;padding:3px;cursor:default;transition:all .15s}
-.hm-cell.zc{background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.25)}
-.hm-cell.zh{background:rgba(249,115,22,.14);border:1px solid rgba(249,115,22,.2)}
-.hm-cell.zm{background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.15)}
-.hm-cell.zl{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.12)}
-.hm-cell.ze{background:transparent;border:none}
-.hm-rl{background:transparent;border:none;min-height:56px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
-.hm-rl span{font-family:'DM Mono',monospace;font-size:8px;color:var(--text-dim);text-transform:uppercase}
-.hm-cl{background:transparent;border:none;min-height:26px;display:flex;align-items:center;justify-content:center}
-.hm-cl span{font-family:'DM Mono',monospace;font-size:8px;color:var(--text-dim);text-transform:uppercase}
-.rdot{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;font-weight:600;cursor:pointer;transition:all .18s;border:1px solid}
-.rdot:hover{transform:scale(1.18);z-index:10}
-.rdot.physical{background:rgba(59,130,246,.2);border-color:rgba(59,130,246,.5);color:#93c5fd}
-.rdot.transition{background:rgba(167,139,250,.2);border-color:rgba(167,139,250,.5);color:#c4b5fd}
-.rdot.liability{background:rgba(249,115,22,.2);border-color:rgba(249,115,22,.5);color:#fdba74}
-.rdot.sel{transform:scale(1.22);box-shadow:0 0 10px currentColor}
-.hmleg{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
-.hmli{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted)}
-.hmld{width:9px;height:9px;border-radius:2px}
+.risk-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.card-content{padding-top:14px}
+.heatmap-3d{position:relative;perspective:1200px;margin-top:12px}
+.heatmap-shell{position:relative;width:100%;padding-top:78%;transform-style:preserve-3d;transform:rotateX(68deg) rotateZ(-20deg);transform-origin:center center;filter:drop-shadow(0 28px 36px rgba(0,0,0,.35))}
+.hm-grid{position:absolute;top:0;left:0;width:100%;height:100%;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:10px;background:rgba(10,18,36,.9);border-radius:24px;padding:20px;border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 0 60px rgba(0,0,0,.35)}
+.hm-grid::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 30%,rgba(255,255,255,.04) 80%);pointer-events:none;border-radius:24px}
+.hm-cell{border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 0 22px rgba(255,255,255,.04),0 10px 30px rgba(0,0,0,.18);transition:all .25s}
+.hm-cell:hover{transform:translateY(-6px) scale(1.04);box-shadow:0 18px 34px rgba(0,0,0,.28),inset 0 0 22px rgba(255,255,255,.08)}
+.hm-cell::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at top center,rgba(255,255,255,.12),transparent 40%)}
+.hm-cell.zc{background:radial-gradient(circle at 40% 25%,rgba(251,81,109,.3),rgba(251,81,109,.1) 42%,rgba(255,255,255,.01));border-color:rgba(251,81,109,.45);box-shadow:0 0 24px rgba(251,81,109,.24)}
+.hm-cell.zh{background:radial-gradient(circle at 40% 25%,rgba(249,115,22,.28),rgba(249,115,22,.12) 42%,rgba(255,255,255,.01));border-color:rgba(249,115,22,.4);box-shadow:0 0 22px rgba(249,115,22,.22)}
+.hm-cell.zm{background:radial-gradient(circle at 40% 25%,rgba(245,158,11,.24),rgba(245,158,11,.1) 42%,rgba(255,255,255,.01));border-color:rgba(245,158,11,.32);box-shadow:0 0 18px rgba(245,158,11,.18)}
+.hm-cell.zl{background:radial-gradient(circle at 40% 25%,rgba(16,185,129,.18),rgba(16,185,129,.08) 42%,rgba(255,255,255,.01));border-color:rgba(16,185,129,.28);box-shadow:0 0 16px rgba(16,185,129,.14)}
+.hm-cell.ze{background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.08);box-shadow:none}
+.hm-rl,.hm-cl{background:transparent;border:none;min-height:26px;display:flex;align-items:center;justify-content:center}
+.hm-rl span,.hm-cl span{font-family:'DM Mono',monospace;font-size:8px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.12em}
+.rdot{width:36px;height:36px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;cursor:pointer;transition:all .18s;border:1px solid rgba(255,255,255,.14);background:rgba(6,12,26,.75);color:#fff;box-shadow:0 10px 28px rgba(0,0,0,.32)}
+.rdot:hover{transform:scale(1.16);box-shadow:0 18px 30px rgba(0,0,0,.4)}
+.rdot.physical{background:linear-gradient(135deg,#38bdf8,#0f172a);border-color:rgba(59,130,246,.75)}
+.rdot.transition{background:linear-gradient(135deg,#c4b5fd,#111827);border-color:rgba(167,139,250,.75)}
+.rdot.liability{background:linear-gradient(135deg,#fb923c,#1f2937);border-color:rgba(249,115,22,.75)}
+.rdot.sel{box-shadow:0 0 24px rgba(29,206,152,.55),0 16px 24px rgba(29,206,152,.22);transform:scale(1.28);animation:pulse 1.6s ease-in-out infinite}
+.hmleg{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.hmli{display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted)}
+.hmld{width:10px;height:10px;border-radius:3px}
+.risk-note{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:8px}
+@keyframes pulse{0%,100%{transform:scale(1.2)}50%{transform:scale(1.28)}}
+.comp-ring{position:relative;width:130px;height:130px;flex-shrink:0}
+.comp-ring svg{width:100%;height:100%}
+.comp-center{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.comp-value{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fff;line-height:1}
+.comp-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.12em}
+.compliance-meta{display:flex;flex-direction:column;gap:10px;flex:1}
+.comp-badge{display:flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:11px;color:#fff}
+.comp-badge span{font-family:'DM Mono',monospace;font-weight:700}
+.policy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.pstat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.pnum{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#fff}
+.plabel{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.12em}
+.control-summary{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.control-ring{position:relative;width:110px;height:110px;flex-shrink:0}
+.control-ring svg{width:100%;height:100%}
+.ctr{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.ctr-val{font-family:'Syne',sans-serif;font-size:26px;color:#fff;font-weight:700}
+.ctr-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.12em}
+.control-list{display:grid;gap:10px}
+.control-item{display:flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:11px;color:#fff}
+.control-swatch{width:11px;height:11px;border-radius:3px}
+.control-chart{height:90px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;display:flex;align-items:flex-end;gap:8px;padding:12px}
+.control-bar{flex:1;border-radius:10px;display:flex;align-items:flex-end;justify-content:center;color:#fff;font-size:10px}
+.matrix-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.matrix-tile{border-radius:16px;padding:18px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 18px 40px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.06);transition:transform .2s,box-shadow .2s;background:rgba(255,255,255,.02)}
+.matrix-tile:hover{transform:translateY(-3px);box-shadow:0 22px 48px rgba(0,0,0,.3)}
+.matrix-rank{font-family:'Syne',sans-serif;font-size:26px;font-weight:800}
+.matrix-name{font-size:12px;color:var(--text-muted);margin-top:10px;line-height:1.4}
+.activity-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.activity-item{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:14px}
+.activity-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.activity-content{flex:1}
+.activity-title{font-size:12px;color:#fff;font-weight:700;line-height:1.3}
+.activity-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:4px}
+.activity-meta{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px}
 
 /* ── RISK PANEL ── */
 .rpanel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
@@ -412,74 +453,35 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="ptrow">
     <div>
       <div class="ptitle">Climate Risk Register</div>
-      <div class="psub" id="rSub">TCFD-aligned · Physical, Transition &amp; Liability Risks · IFRS S2 &amp; King IV</div>
+      <div class="psub" id="rSub">Likelihood × Impact heatmap · Physical, Transition & Liability · IFRS S2 aligned</div>
     </div>
     <div class="tcfd-row">
-      <span class="tcfd-pill">TCFD</span><span class="tcfd-pill">IFRS S2</span><span class="tcfd-pill">King IV</span><span class="tcfd-pill">GRI 201-2</span>
+      <span class="tcfd-pill">TCFD</span><span class="tcfd-pill">IFRS S2</span><span class="tcfd-pill">King IV</span><span class="tcfd-pill">Climate Risk</span>
     </div>
   </div>
-  <div class="kpi6" id="rKpiStrip"></div>
-  <div class="gsplit">
-    <div class="card">
-      <div class="card-header"><div class="card-title">Risk Heatmap — Likelihood × Impact</div><div class="ctag" id="hmTag">All Risks</div></div>
-      <div style="position:relative;padding-left:48px">
-        <div style="position:absolute;left:-8px;top:50%;transform:translateY(-50%) rotate(-90deg);font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap">Likelihood →</div>
-        <div class="hm-grid" id="hmGrid"></div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-top:7px">Impact →</div>
-      </div>
-      <div class="hmleg">
-        <div class="hmli"><div class="hmld" style="background:rgba(59,130,246,.4);border:1px solid rgba(59,130,246,.6)"></div>Physical</div>
-        <div class="hmli"><div class="hmld" style="background:rgba(167,139,250,.4);border:1px solid rgba(167,139,250,.6)"></div>Transition</div>
-        <div class="hmli"><div class="hmld" style="background:rgba(249,115,22,.4);border:1px solid rgba(249,115,22,.6)"></div>Liability</div>
-        <div class="hmli"><div class="hmld" style="background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.3)"></div>Critical</div>
-        <div class="hmli"><div class="hmld" style="background:rgba(249,115,22,.14);border:1px solid rgba(249,115,22,.25)"></div>High</div>
-        <div class="hmli"><div class="hmld" style="background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.2)"></div>Medium</div>
+  <div class="risk-grid">
+    <div class="card risk-landscape">
+      <div class="card-header"><div class="card-title">Risk Heatmap</div><div class="ctag" id="hmTag">All Risks</div></div>
+      <div class="card-content">
+        <div class="risk-note">Interactive heatmap shows risk clustering across likelihood and impact, with critical hotspots pulsing in red.</div>
+        <div class="heatmap-3d"><div class="heatmap-shell"><div class="hm-grid" id="hmGrid"></div></div></div>
+        <div class="hmleg">
+          <div class="hmli"><div class="hmld" style="background:#38bdf8"></div>Physical</div>
+          <div class="hmli"><div class="hmld" style="background:#c4b5fd"></div>Transition</div>
+          <div class="hmli"><div class="hmld" style="background:#fb923c"></div>Liability</div>
+          <div class="hmli"><div class="hmld" style="background:#fb516f"></div>Critical</div>
+          <div class="hmli"><div class="hmld" style="background:#f97316"></div>High</div>
+          <div class="hmli"><div class="hmld" style="background:#fbbf24"></div>Medium</div>
+        </div>
       </div>
     </div>
-    <div class="rpanel" id="riskPanel">
-      <div class="rpanel-ph">
-        <div class="rpanel-ph-icon">⬡</div>
-        <div class="rpanel-ph-txt">Select a risk from the heatmap<br>or the register below</div>
-      </div>
-    </div>
-  </div>
-  <div class="card" style="margin-bottom:14px">
-    <div class="card-header">
-      <div class="card-title">Risk Register</div>
-      <div style="display:flex;gap:7px;align-items:center">
-        <div class="ctag" id="regCount">— Risks</div>
-        <div class="ctag">Click row · view detail</div>
-      </div>
-    </div>
-    <table class="rtable">
-      <thead><tr>
-        <th onclick="sortR('id')">ID</th>
-        <th onclick="sortR('name')">Risk</th>
-        <th onclick="sortR('type')">Type</th>
-        <th onclick="sortR('rating')">Rating</th>
-        <th onclick="sortR('score')">Score ↕</th>
-        <th onclick="sortR('horizon')">Horizon</th>
-        <th onclick="sortR('exposure')">Exposure ↕</th>
-        <th onclick="sortR('trend')">Trend</th>
-        <th>BU</th>
-        <th>Owner</th>
-      </tr></thead>
-      <tbody id="riskTbody"></tbody>
-    </table>
+    <div class="card compliance-card" id="complianceOverview"></div>
+    <div class="card policy-card" id="policySummary"></div>
   </div>
   <div class="g33">
-    <div class="card">
-      <div class="card-header"><div class="card-title">Scenario Analysis</div><div class="ctag">Financial Exposure</div></div>
-      <div id="scenarioPanel"></div>
-    </div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">Regulatory Obligations</div><div class="ctag">Compliance Status</div></div>
-      <div id="regulatoryPanel"></div>
-    </div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">Risk Treatment Summary</div><div class="ctag">By Strategy</div></div>
-      <div id="treatmentPanel"></div>
-    </div>
+    <div class="card" id="controlPerformance"></div>
+    <div class="card" id="riskMatrix"></div>
+    <div class="card" id="recentActivities"></div>
   </div>
   <div class="footer">
     <div style="display:flex;gap:7px;flex-wrap:wrap">
@@ -1080,25 +1082,121 @@ function renderRisk() {
   const fr = filteredRisks();
   const ind = INDUSTRIES.find(i=>i.id===activeIndustry);
   document.getElementById('rSub').textContent = `TCFD-aligned · Physical, Transition & Liability Risks · IFRS S2 & King IV · ${ind.entity}`;
-
-  // KPIs
-  const tot=fr.length,crit=fr.filter(r=>r.rating==='critical').length,hi=fr.filter(r=>r.rating==='high').length,med=fr.filter(r=>r.rating==='medium').length,lo=fr.filter(r=>r.rating==='low').length;
-  const totalExp=fr.reduce((s,r)=>s+r.exposure,0);
-  document.getElementById('rKpiStrip').innerHTML=`
-    <div class="kpi-card" style="border-top:2px solid var(--accent)"><div class="klabel">Total Risks</div><div class="kvalue" style="color:var(--accent)">${tot}</div><div class="kunit">In register</div></div>
-    <div class="kpi-card crc"><div class="klabel">Critical</div><div class="kvalue" style="color:var(--rc)">${crit}</div><div class="kunit">Score ≥ 16</div></div>
-    <div class="kpi-card crh"><div class="klabel">High</div><div class="kvalue" style="color:var(--rh)">${hi}</div><div class="kunit">Score 12–15</div></div>
-    <div class="kpi-card crm"><div class="klabel">Medium</div><div class="kvalue" style="color:var(--rm)">${med}</div><div class="kunit">Score 6–11</div></div>
-    <div class="kpi-card crl"><div class="klabel">Low</div><div class="kvalue" style="color:var(--rl)">${lo}</div><div class="kunit">Score ≤ 5</div></div>
-    <div class="kpi-card cexp"><div class="klabel">Total Exposure</div><div class="kvalue" style="color:var(--warn)">R ${(totalExp/1000).toFixed(1)}bn</div><div class="kunit">Modelled</div></div>`;
-
+  const tot = fr.length;
+  const crit = fr.filter(r=>r.rating==='critical').length;
+  const hi = fr.filter(r=>r.rating==='high').length;
+  const med = fr.filter(r=>r.rating==='medium').length;
+  const lo = fr.filter(r=>r.rating==='low').length;
+  const totalExp = fr.reduce((s,r)=>s+r.exposure,0);
   renderHeatmap(fr);
-  renderRiskTable(fr);
-  renderRiskPanel();
-  renderScenarios();
-  renderRegulatory();
-  renderTreatment(fr);
-  animateScenBars();
+  renderComplianceOverview(fr, tot, crit, hi, med, lo);
+  renderPolicySummary();
+  renderControlPerformance(fr, tot, crit, hi, med, lo);
+  renderRiskMatrix(fr);
+  renderRecentActivities();
+}
+
+function renderComplianceOverview(fr, tot, crit, hi) {
+  const compliancePct = 98;
+  const assessments = 9845;
+  const audits = 5;
+  const trend = [82,85,88,92,95,96,98,97,98,96,98,88];
+  document.getElementById('complianceOverview').innerHTML = `
+    <div class="card-header"><div class="card-title">Global Compliance Overview</div><div class="ctag">Dashboard View</div></div>
+    <div class="card-content">
+      <div class="compliance-meter">
+        <div class="comp-ring">${renderComplianceRing(compliancePct)}</div>
+        <div class="compliance-meta">
+          <div class="comp-badge"><span>${compliancePct}%</span> Compliance</div>
+          <div class="comp-badge"><span>${assessments.toLocaleString()}</span> Assessments Completed</div>
+          <div class="comp-badge"><span>${audits}</span> Active Audits</div>
+        </div>
+      </div>
+      <div style="margin-top:18px">${renderComplianceTrend(trend)}</div>
+    </div>`;
+}
+
+function renderComplianceRing(pct) {
+  const C = 2 * Math.PI * 52;
+  const dash = (pct / 100) * C;
+  const gap = C - dash;
+  return `<svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="16"/><circle cx="65" cy="65" r="52" fill="none" stroke="url(#cpgrad)" stroke-width="16" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${C*0.25}" stroke-linecap="round"/><defs><linearGradient id="cpgrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg>
+      <div class="comp-center"><div class="comp-value">${pct}%</div><div class="comp-sub">Compliant</div></div>`;
+}
+
+function renderComplianceTrend(values) {
+  const max = Math.max(...values) * 1.1;
+  const points = values.map((v,i)=>`${30 + i * 40},${110 - (v / max) * 88}`).join(' ');
+  return `<svg viewBox="0 0 520 120" style="width:100%;height:120px" font-family="DM Mono,monospace"><defs><linearGradient id="trendgrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#22c55e"/></linearGradient></defs><path d="M${points}" fill="none" stroke="url(#trendgrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M${points} L490,110 L30,110 Z" fill="rgba(56,189,248,.12)"/><circle cx="30" cy="${110 - (values[0] / max) * 88}" r="4" fill="#38bdf8"/><circle cx="490" cy="${110 - (values[values.length-1] / max) * 88}" r="4" fill="#22c55e"/><text x="30" y="118" fill="#8aa3bf" font-size="8">Jan</text><text x="470" y="118" fill="#8aa3bf" font-size="8" text-anchor="end">Nov</text></svg>`;
+}
+
+function renderPolicySummary() {
+  document.getElementById('policySummary').innerHTML = `
+    <div class="card-header"><div class="card-title">Policy Management Summary</div><div class="ctag">Active · Due · Overdue</div></div>
+    <div class="card-content">
+      <div class="policy-grid">
+        <div class="pstat"><div class="pnum">342</div><div class="plabel">Active Policies</div></div>
+        <div class="pstat"><div class="pnum">23</div><div class="plabel">Due Soon</div></div>
+        <div class="pstat"><div class="pnum">4</div><div class="plabel">Overdue Items</div></div>
+        <div class="pstat"><div class="pnum">98%</div><div class="plabel">Governance Consistency</div></div>
+      </div>
+    </div>`;
+}
+
+function renderControlPerformance(fr, tot, crit, hi) {
+  const issues = Math.round(tot * 0.14);
+  const deficiencies = Math.round(tot * 0.08);
+  const operating = 78;
+  document.getElementById('controlPerformance').innerHTML = `
+    <div class="card-header"><div class="card-title">Control Performance</div><div class="ctag">Operational Resilience</div></div>
+    <div class="card-content">
+      <div class="control-summary">
+        <div class="control-ring">${renderControlRing(operating)}</div>
+        <div class="control-list">
+          <div class="control-item"><span class="control-swatch" style="background:#22c55e"></span>78% Controls Operating Effectively</div>
+          <div class="control-item"><span class="control-swatch" style="background:#fbbf24"></span>14% Issues Identified</div>
+          <div class="control-item"><span class="control-swatch" style="background:#fb506e"></span>8% Deficiencies</div>
+        </div>
+      </div>
+      <div class="control-chart">
+        <div class="control-bar" style="height:80%;background:#22c55e">Ct</div>
+        <div class="control-bar" style="height:55%;background:#fb923c">Iss</div>
+        <div class="control-bar" style="height:30%;background:#f43f5e">Re</div>
+        <div class="control-bar" style="height:22%;background:#fb506e">Diff</div>
+      </div>
+      <div class="comp-badge" style="margin-top:14px"><span>Pending Remediation</span> Monitoring progress across 120 control items.</div>
+    </div>`;
+}
+
+function renderControlRing(pct) {
+  const C = 2 * Math.PI * 42;
+  const dash = (pct / 100) * C;
+  const gap = C - dash;
+  return `<svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="42" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="14"/><circle cx="55" cy="55" r="42" fill="none" stroke="#22c55e" stroke-width="14" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${C*0.25}" stroke-linecap="round"/></svg>
+    <div class="ctr"><div class="ctr-val">${pct}%</div><div class="ctr-label">Operational</div></div>`;
+}
+
+function renderRiskMatrix(fr) {
+  const topRisks = fr.slice().sort((a,b)=>b.score-a.score).slice(0,6);
+  document.getElementById('riskMatrix').innerHTML = `
+    <div class="card-header"><div class="card-title">Risk Matrix: High-Impact Risks</div><div class="ctag">Top 6</div></div>
+    <div class="card-content">
+      <div class="matrix-grid">
+        ${topRisks.map((r,i)=>`<div class="matrix-tile" style="background:rgba(255,255,255,.02)"><div class="matrix-rank">${i+1}</div><div class="matrix-name">${r.name}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="rbadge ${r.rating}">${r.rating.toUpperCase()}</span><span class="tbadge ${r.type}">${r.type}</span></span></div></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function renderRecentActivities() {
+  document.getElementById('recentActivities').innerHTML = `
+    <div class="card-header"><div class="card-title">Recent Activities & Alerts</div><div class="ctag">Latest Updates</div></div>
+    <div class="card-content">
+      <div class="activity-list">
+        <div class="activity-item"><div class="activity-icon" style="background:#22c55e">✓</div><div class="activity-content"><div class="activity-title">Policy Approved: Information Security V3.1</div><div class="activity-sub">6 months ago</div><div class="activity-meta">Formal policy approval completed and shared with governance.</div></div></div>
+        <div class="activity-item"><div class="activity-icon" style="background:#fb506e">!</div><div class="activity-content"><div class="activity-title">Alert: Control Failure C-412</div><div class="activity-sub">3 months ago</div><div class="activity-meta">Immediate remediation flagged on control coverage for access management.</div></div></div>
+        <div class="activity-item"><div class="activity-icon" style="background:#38bdf8">i</div><div class="activity-content"><div class="activity-title">New Assessment: GDPR Compliance Review</div><div class="activity-sub">3 months ago</div><div class="activity-meta">Planned review initiated for privacy and data protection controls.</div></div></div>
+      </div>
+    </div>`;
 }
 
 function renderHeatmap(fr) {
